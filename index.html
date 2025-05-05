@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cafe Saya</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Pacifico&family=Playfair+Display:wght@500&display=swap');
+        
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            background-image: url('dew19.jpg'); 
+            background-size: cover; 
+            background-position: center; 
+            background-attachment: fixed; 
+        }
+        header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 20px; 
+            background-color: #5C3F32; 
+            color: #ffffff; 
+        }
+        .logo { width: 80px; }
+        .menu-icon { font-size: 24px; cursor: pointer; }
+        .menu { 
+            display: none; 
+            position: absolute; 
+            top: 60px; 
+            right: 10px; 
+            background: rgba(255, 235, 224, 0.9); 
+            border: 1px solid #ffffff; 
+            padding: 10px; 
+            border-radius: 5px; 
+        }
+        .menu a { display: block; padding: 10px; color: #6B4226; text-decoration: none; }
+        .menu a:hover { background: #000000; color: white; }
+        .promo { 
+            text-align: center; 
+            padding: 50px; 
+            background: rgba(255, 254, 255, 0.8); 
+            font-size: 20px; 
+            color: #6b4226; 
+            border-radius: 10px; 
+            margin: 20px; 
+        }
+        .promo h2 {
+            font-family: 'Pacifico', cursive;
+            font-size: 28px;
+            color: #6b4226;
+        }
+        .promo p {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+        }
+        .header-title {
+            font-size: 32px;
+            font-weight: bold;
+            font-family: 'Dancing Script', cursive;
+        }
+        .container {
+            display: none;
+            padding: 20px;
+            text-align: center;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            justify-content: center;
+        }
+        .item {
+            background: #fff;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+        .item img {
+            width: 100%;
+            border-radius: 5px;
+        }
+    </style>
+    <head>
+        <style>
+            .cart-container {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                background: rgb(240, 240, 240);
+                padding: 15px;
+                width: 250px;
+                box-shadow: 0px 4px 10px rgb(65, 30, 30);
+                border-radius: 10px;
+                font-family: Arial, sans-serif;
+            }
+    
+            .cart-container h3 {
+                margin: 0;
+                padding-bottom: 10px;
+                font-size: 18px;
+                text-align: center;
+                color: #6B4226;
+            }
+    
+            #cart-items {
+                max-height: 150px;
+                overflow-y: auto;
+                margin-bottom: 10px;
+            }
+    
+            #cart-items p {
+                font-size: 14px;
+                padding: 5px 0;
+                border-bottom: 1px solid #ddd;
+            }
+    
+            #cart-total {
+                font-size: 16px;
+                text-align: right;
+                color: #333;
+            }
+    
+            .cart-container button {
+                width: 100%;
+                padding: 8px;
+                border: none;
+                background: #6B4226;
+                color: rgb(255, 254, 254);
+                font-size: 16px;
+                cursor: pointer;
+                border-radius: 5px;
+            }
+    
+            .cart-container button:hover {
+                background: #573A2C;
+            }
+        </style>
+    </head>
+    <script>
+        let cart = [];
+        
+        function toggleMenu() {
+            var menu = document.getElementById("menu");
+            menu.style.display = menu.style.display === "block" ? "none" : "block";
+        }
+        function showSection(sectionId) {
+            document.querySelectorAll('.container').forEach(el => el.style.display = 'none');
+            document.getElementById(sectionId).style.display = 'block';
+        }
+        function openInstagram() {
+            window.open("https://www.instagram.com/cafekesayanganku_15", "_blank");
+        }
+        function addToCart(itemName, price) {
+            cart.push({ itemName, price });
+            updateCart();
+        }
+        function updateCart() {
+            let cartElement = document.getElementById("cart");
+            cartElement.innerHTML = "<h3>Keranjang</h3>";
+            let total = 0;
+            cart.forEach(item => {
+                total += item.price;
+                cartElement.innerHTML += `<p>${item.itemName} - Rp${item.price}</p>`;
+            });
+            cartElement.innerHTML += `<strong>Total: Rp${total}</strong><br>`;
+            cartElement.innerHTML += `<button onclick='checkout()'>Checkout</button>`;
+        }
+        function checkout() {
+            if (cart.length === 0) {
+                alert("Keranjang masih kosong!");
+                return;
+            }
+            // Pilihan metode pembayaran
+    const metode = prompt("Pilih metode pembayaran:\n1. Transfer BCA 1234567890\n2. Dana 088809959457\n3. Di Tempat/Kasir\n\nKetik: 1, 2, atau 3");
+
+let metodePembayaran = "";
+if (metode === "1") {
+    metodePembayaran = "Transfer BCA - 1234567890 a.n. Cafe Aku Kamu Cinta";
+} else if (metode === "2") {
+    metodePembayaran = "Dana - 088809959457 a.n. Cafe Aku Kamu Cinta";
+} else if (metode === "3") {
+    metodePembayaran = "Bayar di Tempat/Kasir";
+} else {
+    alert("Metode tidak valid!");
+    return;
+}
+
+let orderDetails = cart.map(item => `${item.itemName} - Rp${item.price}`).join("\n");
+let totalPrice = cart.reduce((sum, item) => sum + item.price, 0);
+let message = `Halo, saya ingin memesan:\n${orderDetails}\n\nTotal: Rp${totalPrice}\nMetode Pembayaran: ${metodePembayaran}\nTerima kasih!`;
+
+let phone = "6288809959457"; // Ganti ini dengan nomor WhatsApp kamu (tanpa +)
+let encodedMessage = encodeURIComponent(message);
+let whatsappURL = `https://wa.me/${phone}?text=${encodedMessage}`;
+window.open(whatsappURL, "_blank");
+
+cart = [];
+updateCart();
+}
+    </script>
+</head>
+<body>
+    <header>
+        <img src="ayay.png" alt="Logo Cafe" class="logo">
+        <div class="header-title">Aku Kamu Cinta</div>
+        <div class="menu-icon" onclick="toggleMenu()">&#9776;</div>
+    </header>
+    
+    <div id="menu" class="menu">
+        <a href="#" onclick="showSection('promo'); toggleMenu();">Home</a>
+        <a href="#" onclick="showSection('menu-minuman')">Minuman</a>
+        <a href="#" onclick="showSection('menu-makanan')">Makanan</a>
+        <a href="#" onclick="showSection('tentang-kami')">Tentang Kami</a>
+        <a href="#" onclick="openInstagram()">Kontak</a>
+    </div>
+    
+    <section id="promo" class="promo container" style="display: block;">
+        <h2>Promo Spesial!</h2>
+        <p>Hangatnya kopi ini nggak sebanding sama hangatnya tatapanmu waktu kita di sini. Biar makin hangat, beli 2 minuman gratis 1 Kopi Cinta! Karena cinta, seperti kopi, lebih nikmat kalau dinikmati bersama.💕☕</p>
+    </section>
+    
+    <section id="menu-minuman" class="container">
+        <h2>Menu Minuman</h2>
+        <div class="grid">
+            <div class="item">
+                <img src="Kopi cinta.jpg" alt="Kopi Cinta">
+                <p>Kopi Cinta - Rp14.000</p>
+                <button onclick="addToCart('Kopi Cinta', 14000)">Tambah ke Keranjang</button>
+            </div>
+            <div class="item">
+                <img src="espreso.jpg" alt="Espresso">
+                <p>Espresso - Rp15.000</p>
+                <button onclick="addToCart('Espresso', 15000)">Tambah ke Keranjang</button>
+            </div>
+            <div class="item">
+                <img src="americano.jpg" alt="Americano">
+                <p>Americano - Rp18.000</p>
+                <button onclick="addToCart('Americano', 18000)">Tambah ke Keranjang</button>
+            </div>
+            <div class="item">
+                <img src="capucino.jpg" alt="Cappuccino">
+                <p>Cappuccino - Rp20.000</p>
+                <button onclick="addToCart('Cappuccino', 20000)">Tambah ke Keranjang</button>
+            </div>
+            <div class="item">
+                <img src="latte.jpg" alt="Latte">
+                <p>Latte - Rp22.000</p>
+                <button onclick="addToCart('Latte'  , 22000)">Tambah ke Keranjang</button>
+            </div>
+            <div class="item">
+                <img src="mocachino.jpg" alt="Moccachino">
+                <p>Moccachino - Rp25.000</p>
+                <button onclick="addToCart('Moccachino', 25000)">Tambah ke Keranjang</button>
+            </div>
+            <div class="item">
+                <img src="caramel.jpg" alt="Caramel ">
+                <p>Caramel - Rp27.000</p>
+                <button onclick="addToCart('Caramel   ', 27000)">Tambah ke Keranjang</button>
+            </div>
+            <div class="item">
+                <img src="kopi mantan.jpg" alt="Kopi Mantan ">
+                <p>Kopi Mantan - Rp30.000</p>
+                <button onclick="addToCart('Kopi Mantan   ', 30000)">Tambah ke Keranjang</button>
+            </div>
+            <div class="item">
+                <img src="Ice Coffe Gebetan.jpg" alt="Ice Coffe Gebetan">
+                <p>Ice Coffe Gebetan - Rp30.000</p>
+                <button onclick="addToCart('Ice Coffe Gebetan', 30000)">Tambah ke Keranjang</button>
+            </div>
+        </div>
+    </section>
+    
+    <section id="menu-makanan" class="container">
+        <h2>Menu Makanan</h2>
+        <div class="grid">
+            <div class="item">
+                <img src="French Fries.jpg" alt="French Fries">
+                <p>French Fries - Rp15.000</p>
+                <button onclick="addToCart('French Fries ', 15000)">Tambah ke Keranjang</button>
+            </div>
+                <div class="item">
+                    <img src="Onion Rings.jpg" alt="Onion Rings">
+                    <p>Onion Rings - Rp18.000</p>
+                    <button onclick="addToCart('Onion Rings', 18000)">Tambah ke Keranjang</button>
+                </div>
+                <div class="item">
+                    <img src="Nugget.jpg" alt="Nugget">
+                    <p>Nugget - Rp18.000</p>
+                    <button onclick="addToCart('Nugget', 18000)">Tambah ke Keranjang</button>
+                </div>
+                <div class="item">
+                    <img src="Chicken Wings.jpg" alt="Chicken Wings">
+                    <p>Chicken Wings - Rp25.000</p>
+                    <button onclick="addToCart('Chicken Wings ', 25000)">Tambah ke Keranjang</button>
+                </div>
+                <div class="item">
+                    <img src="Banana Roll Crispyjpg.jpg" alt="Banana Roll Crispy">
+                    <p>Banana Roll Crispy - Rp25.000</p>
+                    <button onclick="addToCart('Banana Roll Crispy', 25000)">Tambah ke Keranjang</button>
+                </div>
+    </section>
+    
+    
+    </div>
+    <section id="tentang-kami" class="container">
+        <h2 style="font-family: 'Pacifico', cursive; color: #ffffff;">Tentang Kami</h2>
+        <div style="background: rgba(255, 255, 255, 0.9); padding: 20px; border-radius: 10px; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);">
+            <p style="font-family: 'Playfair Display', serif; font-size: 18px; color: #333;">
+                Cafe <b>"Aku Kamu Cinta"</b> adalah tempat yang nyaman untuk menikmati kopi dan makanan ringan bersama orang terkasih. 
+                Kami bangga telah mendapatkan penghargaan sebagai <b>"Cafe Terbersih Sepanjang Sejarah"</b>. Kami selalu berkomitmen 
+                untuk memberikan pelayanan terbaik dan suasana yang menyenangkan bagi pelanggan.
+            </p>
+        </div>
+    </section> 
+    <div id="cart" class="cart-container">
+        <h3>Masukan Pesananmu</h3>
+        <div id="cart-items"></div>
+        <p id="cart-total"><strong>Total: Rp0</strong></p>
+        <button onclick="checkout()">Checkout</button>
+    
+        <div style="font-size: 12px; margin-top: 10px; color: #444;">
+            <strong>Metode Pembayaran:</strong><br>
+            💳 BCA: 1234567890 (a.n. Cafe Cinta)<br>
+            📱 DANA: 088809959457<br>
+            🛵 Di Tempat/Kasir
+        </div>
+    </div>
+    </body>
+</body>
+</html>
